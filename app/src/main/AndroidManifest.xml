@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jun2yah.codingtest.onestoretest">
 
+    <uses-permission
+        android:name="android.permission.GET_ACCOUNTS"
+        android:maxSdkVersion="22" />
+
+    <!-- 통신사 코드를 가져오기위해 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,16 +16,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.SplashActivity">
+        <activity
+            android:name=".view.splash.SplashActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.MarketActivity" />
-        <activity android:name=".view.ServiceListActivity" />
-        <activity android:name=".view.ServiceInfoActivity"></activity>
+        <activity
+            android:name=".view.setting.SettingActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.servicelist.ServiceListActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.serviceinfo.ServiceInfoActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

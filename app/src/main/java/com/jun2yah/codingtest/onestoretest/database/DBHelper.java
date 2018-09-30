@@ -1,5 +1,6 @@
 package com.jun2yah.codingtest.onestoretest.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,11 +9,17 @@ import android.widget.Toast;
 
 import com.jun2yah.codingtest.onestoretest.model.AppInfo;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
 public class DBHelper extends SQLiteOpenHelper {
 
     private Context context;
 
-    private final String tableName = "APP_INFO";
+    private final String tableName = "App";
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
      * DBHelper 생성자로 관리할 DB 이름과 버전 정보를 받음
@@ -35,7 +42,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL("CREATE TABLE APP_INFO (_id INTEGER PRIMARY KEY AUTOINCREMENT, package_name TEXT, installation_market TEXT, version_name TEXT, update_time TEXT, install_time TEXT, source_dir TEXT, file_size TEXT);");
+        db.execSQL("CREATE TABLE APP_INFO (_id INTEGER PRIMARY KEY AUTOINCREMENT, package_name TEXT, installation_market TEXT, version_name TEXT, update_time INTEGER, install_time INTEGER, source_dir TEXT, file_size INTEGER);");
         Toast.makeText(context, "Table 생성완료", Toast.LENGTH_SHORT).show();
     }
 
@@ -52,10 +59,24 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void insert(AppInfo appInfo) {
-        // 읽고 쓰기가 가능하게 DB 열기
+//        // 읽고 쓰기가 가능하게 DB 열기
+//        SQLiteDatabase db = getWritableDatabase();
+//        // DB에 입력한 값으로 행 추가
+//        db.execSQL("INSERT INTO APP_INFO VALUES(null, '" + appInfo.getPackageName() + "', " + appInfo.getInstallationMarket() + ", '" + appInfo.getVersionName() + "');");
+//        db.close();
+
         SQLiteDatabase db = getWritableDatabase();
-        // DB에 입력한 값으로 행 추가
-        db.execSQL("INSERT INTO APP_INFO VALUES(null, '" + appInfo.getPackageName() + "', " + appInfo.getInstallationMarket() + ", '" + appInfo.getVersionName() + "');");
+
+        ContentValues values = new ContentValues();
+        values.put("package_name", appInfo.getPackageName());
+        values.put("installation_market", appInfo.getInstallationMarket());
+        values.put("version_name", appInfo.getVersionName());
+        values.put("update_time", appInfo.getUpdateTime());
+        values.put("install_time", appInfo.getInstallTime());
+        values.put("source_dir", appInfo.getSourceDir());
+        values.put("file_size", appInfo.getFileSize());
+
+        db.insert("APP_INFO", null, values);
         db.close();
     }
 
@@ -73,24 +94,27 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public String getResult() {
+    public List<AppInfo> getResult() {
+        List<AppInfo> appInfoList = new ArrayList<>();
+
         // 읽기가 가능하게 DB 열기
-        SQLiteDatabase db = getReadableDatabase();
-        String result = "";
+        SQLiteDatabase db = getWritableDatabase();
 
         // DB에 있는 데이터를 쉽게 처리하기 위해 Cursor를 사용하여 테이블에 있는 모든 데이터 출력
-        Cursor cursor = db.rawQuery("SELECT * FROM MONEYBOOK", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM APP_INFO", null);
         while (cursor.moveToNext()) {
-            result += cursor.getString(0)
-                    + " : "
-                    + cursor.getString(1)
-                    + " | "
-                    + cursor.getInt(2)
-                    + "원 "
-                    + cursor.getString(3)
-                    + "\n";
+            AppInfo appInfo = new AppInfo();
+            appInfo.setPackageName(cursor.getString(1));
+            appInfo.setInstallationMarket(cursor.getString(2));
+            appInfo.setVersionName(cursor.getString(3));
+            appInfo.setUpdateTime(cursor.getLong(4));
+            appInfo.setInstallTime(cursor.getLong(5));
+            appInfo.setSourceDir(cursor.getString(6));
+            appInfo.setFileSize(cursor.getLong(7));
+
+            appInfoList.add(appInfo);
         }
 
-        return result;
+        return appInfoList;
     }
 }
