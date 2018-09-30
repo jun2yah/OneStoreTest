@@ -8,13 +8,27 @@ public class AppInfo {
     // 버전정보
     private String versionName;
     // 최근 update time
-    private String updateTime;
+    private long updateTime;
     // 최초 설치 시간
-    private String installTime;
+    private long installTime;
     // apk 파일 경로
-    private String publicSourceDir;
+    private String sourceDir;
     // apk파일 size
-    private String fileSize;
+    private long fileSize;
+
+    public AppInfo() {
+
+    }
+
+    public AppInfo(String packageName, String installationMarket, String versionName, long updateTime, long installTime, String sourceDir, long fileSize) {
+        this.packageName = packageName;
+        this.installationMarket = installationMarket;
+        this.versionName = versionName;
+        this.updateTime = updateTime;
+        this.installTime = installTime;
+        this.sourceDir = sourceDir;
+        this.fileSize = fileSize;
+    }
 
     public String getPackageName() {
         return packageName;
@@ -40,35 +54,35 @@ public class AppInfo {
         this.versionName = versionName;
     }
 
-    public String getUpdateTime() {
+    public long getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(String updateTime) {
+    public void setUpdateTime(long updateTime) {
         this.updateTime = updateTime;
     }
 
-    public String getInstallTime() {
+    public long getInstallTime() {
         return installTime;
     }
 
-    public void setInstallTime(String installTime) {
+    public void setInstallTime(long installTime) {
         this.installTime = installTime;
     }
 
-    public String getPublicSourceDir() {
-        return publicSourceDir;
+    public String getSourceDir() {
+        return sourceDir;
     }
 
-    public void setPublicSourceDir(String publicSourceDir) {
-        this.publicSourceDir = publicSourceDir;
+    public void setSourceDir(String sourceDir) {
+        this.sourceDir = sourceDir;
     }
 
-    public String getFileSize() {
+    public long getFileSize() {
         return fileSize;
     }
 
-    public void setFileSize(String fileSize) {
+    public void setFileSize(long fileSize) {
         this.fileSize = fileSize;
     }
 }
